@@ -92,17 +92,33 @@ def mps_naive_best(graph, count, filter=None):
     return best_sg
 
 def thickness(graph):
-    t = 1
+    planar_graphs = []
     remaining = graph.copy()
     while not is_planar(remaining):
-        t += 1
-        mps = mps_naive_best(remaining, 1)
+        mps = mps_naive_best(remaining, 400)
+        edges = mps.get_edges()
+        add_graph = Graph(directed=False)
+        add_graph.add_edge_list(edges)
+        planar_graphs.append(add_graph)
         remaining.set_edge_filter(mps.get_edge_filter()[0], inverted=True)
         remaining.purge_edges()
         edges = remaining.get_edges()
         remaining = Graph(directed=False)
         remaining.add_edge_list(edges)
-    return t
+    planar_graphs.append(remaining)
+    return planar_graphs
+
+def save_graphs(graphs, filename_prefix):
+    i = 1
+    for g in graphs:
+        g.save(filename_prefix+str(i)+".graphml", "graphml")
+        i += 1
+
+def max_degree(graph):
+    d = []
+    for v in graph.vertices():
+        d.append(v.out_degree())
+    return max(d)
 
 ##################--------- DRIVER CODE  -------###################### 
 

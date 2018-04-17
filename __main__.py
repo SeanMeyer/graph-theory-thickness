@@ -95,7 +95,7 @@ def thickness(graph):
     planar_graphs = []
     remaining = graph.copy()
     while not is_planar(remaining):
-        mps = mps_naive_best(remaining, 400)
+        mps = mps_naive_best(remaining, 1)
         edges = mps.get_edges()
         add_graph = Graph(directed=False)
         add_graph.add_edge_list(edges)

@@ -143,3 +143,16 @@ edgesOfMysteryGraph3 = '''{{1, 25}, {1, 26}, {1, 27}, {1, 28}, {2,
    23}, {20, 24}, {21, 25}, {21, 26}, {21, 27}, {21, 28}, {22, 
    25}, {22, 26}, {22, 27}, {22, 28}, {23, 25}, {23, 26}, {23, 
    27}, {23, 28}, {24, 25}, {24, 26}, {24, 27}, {24, 28}}'''
+
+graph_names = {
+    "K5": edgesOfK5,
+    "K8": edgesOfK8,
+    "K9": edgesOfK9,
+    "Graph1": edgesOfGraph1,
+    "Graph2": edgesOfGraph2,
+    "Graph3": edgesOfGraph3,
+    "Graph4": edgesOfGraph4,
+    "MysteryGraph1": edgesOfMysteryGraph1,
+    "MysteryGraph2": edgesOfMysteryGraph2,
+    "MysteryGraph3": edgesOfMysteryGraph3
+}

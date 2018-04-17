@@ -5,6 +5,8 @@ from competitionGraphs2018 import *
 from graph_tool.all import *
 import re
 import random
+import math
+import time
 
 def make_graph(graph):
     graph = graph.replace('\n', '')
@@ -108,10 +110,47 @@ def thickness(graph):
     planar_graphs.append(remaining)
     return planar_graphs
 
+def best_thickness(graph, runs):
+    bestValue = math.inf
+    planar_graphs = []
+    for _ in range(runs):
+        result = thickness(graph)
+        thickVal = len(result)
+        if (thickVal < bestValue):
+            bestValue = thickVal
+            planar_graphs = result
+    return planar_graphs
+
+def find_thickness_two(graph, max_minutes):
+    bestEdgeCount = math.inf
+    thickVal = 3
+    planar_graphs = []
+    t_end = time.time() + 60 * max_minutes
+    while (thickVal >= 3 and time.time() < t_end):
+        result = thickness(graph)
+        lastGraph = result[-1]
+        lastGraphEdgeCount = lastGraph.num_edges()
+        thickVal = len(result)
+        if (thickVal < 3 or lastGraphEdgeCount < bestEdgeCount):
+            planar_graphs = result
+    return planar_graphs
+
+def save_best_runs(graph_name, runs):
+    graph = make_graph(graph_names[graph_name])
+    planar_graphs = best_thickness(graph, runs)
+    save_graphs(planar_graphs, graph_name)
+    return
+
+def save_best_time(graph_name, max_minutes):
+    graph = make_graph(graph_names[graph_name])
+    planar_graphs = find_thickness_two(graph, max_minutes)
+    save_graphs(planar_graphs, graph_name)
+    return
+
 def save_graphs(graphs, filename_prefix):
     i = 1
     for g in graphs:
-        g.save(filename_prefix+str(i)+".graphml", "graphml")
+        g.save(filename_prefix+"-"+str(i)+".graphml", "graphml")
         i += 1
 
 def max_degree(graph):

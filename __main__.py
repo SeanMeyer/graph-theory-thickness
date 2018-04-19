@@ -121,17 +121,18 @@ def best_thickness(graph, runs):
             planar_graphs = result
     return planar_graphs
 
-def find_thickness_two(graph, max_minutes):
+def find_thickness_two(graph, max_minutes, until=2):
     bestEdgeCount = math.inf
-    thickVal = 3
+    until += 1
+    thickVal = until
     planar_graphs = []
     t_end = time.time() + 60 * max_minutes
-    while (thickVal >= 3 and time.time() < t_end):
+    while (thickVal >= until and time.time() < t_end):
         result = thickness(graph)
         lastGraph = result[-1]
         lastGraphEdgeCount = lastGraph.num_edges()
         thickVal = len(result)
-        if (thickVal < 3 or lastGraphEdgeCount < bestEdgeCount):
+        if (thickVal < until or lastGraphEdgeCount < bestEdgeCount):
             planar_graphs = result
     return planar_graphs
 
@@ -141,9 +142,12 @@ def save_best_runs(graph_name, runs):
     save_graphs(planar_graphs, graph_name)
     return
 
-def save_best_time(graph_name, max_minutes):
-    graph = make_graph(graph_names[graph_name])
-    planar_graphs = find_thickness_two(graph, max_minutes)
+def save_best_time(graph_name, max_minutes, alternate_graph=None, until=2):
+    if alternate_graph is None:
+        graph = make_graph(graph_names[graph_name])
+    else:
+        graph = complete_graph(alternate_graph)
+    planar_graphs = find_thickness_two(graph, max_minutes, until=until)
     save_graphs(planar_graphs, graph_name)
     return
 
@@ -165,4 +169,4 @@ if __name__ != '__main__':
     print('Please run as a self-conatined program')
 else:
     print("Making edgesOfGraph2.png.")
-    draw_graph_png(make_graph(edgesOfGraph2), "edgesOfGraph2.png")
+    #draw_graph_png(make_graph(edgesOfGraph2), "edgesOfGraph2.png")

@@ -1,5 +1,7 @@
+    
 #Import all of the graphs from the competition.
 from competitionGraphs2018 import *
+from ks import *
 
 #Import graph tool into the main namespace
 from graph_tool.all import *
@@ -162,6 +164,27 @@ def max_degree(graph):
     for v in graph.vertices():
         d.append(v.out_degree())
     return max(d)
+
+def hilight_subs(graph_name):
+    graph = make_graph(graph_names[graph_name])
+    from numpy.random import poisson
+    vm = gt.subgraph_isomorphism(k5, graph, max_n=500)
+    for i in range(len(vm)):
+        graph.set_vertex_filter(None)
+        graph.set_edge_filter(None)
+        vmask, emask = mark_subgraph(graph, k5, vm[i])
+        graph.set_vertex_filter(vmask)
+        graph.set_edge_filter(emask)
+        assert gt.isomorphism(g, sub)
+    graph.set_vertex_filter(None)
+    graph.set_edge_filter(None)
+    ewidth = g.copy_property(emask, value_type="double")
+    ewidth.a += 0.5
+    ewidth.a *= 2
+    graph_draw(g, vertex_fill_color=vmask, edge_color=emask,
+        edge_pen_width=ewidth, output_size=(200, 200),
+        output="subgraph-iso-embed.pdf")
+    #g.save(graph_name+".graphml", "graphml")
 
 ##################--------- DRIVER CODE  -------###################### 
 
